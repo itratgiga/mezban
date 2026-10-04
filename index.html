@@ -1,0 +1,508 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mezban</title>
+<link rel="icon" href="logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+--cream:#FFFCF3; --cream2:#F6F0DC; --paper:#FFFFFF; --ink:#0F3324; --muted:#5E7266; --line:#E7DFC4;
+--green:#135C3D; --green-deep:#0C3F2A; --green-soft:#E3F0E7; --gold:#C79335; --gold-light:#E6C877; --gold-soft:#F7EACB;
+--ok:#1C8A55; --bad:#B3402F; --on-green:#FFF8E1;
+--shadow:0 2px 6px rgba(15,51,36,.06),0 12px 28px rgba(15,51,36,.08);
+--display:'Marcellus',Georgia,serif; --body:'Plus Jakarta Sans',system-ui,sans-serif;
+--tabh:76px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--cream:#0B1B14; --cream2:#10271C; --paper:#142E22; --ink:#F4EBCB; --muted:#A5B8AA; --line:#25483A;
+--green:#3FA676; --green-deep:#0C3F2A; --green-soft:#17372A; --gold:#E0B04A; --gold-light:#F0D488; --gold-soft:#3A3014;
+--ok:#52C98C; --bad:#F08A78; --on-green:#FFF8E1; --shadow:0 2px 6px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+--cream:#0B1B14; --cream2:#10271C; --paper:#142E22; --ink:#F4EBCB; --muted:#A5B8AA; --line:#25483A;
+--green:#3FA676; --green-deep:#0C3F2A; --green-soft:#17372A; --gold:#E0B04A; --gold-light:#F0D488; --gold-soft:#3A3014;
+--ok:#52C98C; --bad:#F08A78; --on-green:#FFF8E1; --shadow:0 2px 6px rgba(0,0,0,.35),0 12px 28px rgba(0,0,0,.35); color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--cream2);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.15}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.app{position:relative;max-width:480px;margin:0 auto;height:100%;background:var(--cream);display:flex;flex-direction:column;overflow:hidden;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M32 4l6 14 14-6-6 14 14 6-14 6 6 14-14-6-6 14-6-14-14 6 6-14-14-6 14-6-6-14 14 6z' fill='none' stroke='%23C79335' stroke-opacity='.10'/%3E%3C/svg%3E")}
+@media (min-width:520px){.app{height:min(100%,920px);margin-block:auto;border-radius:28px;box-shadow:0 30px 80px rgba(15,51,36,.25)} body{display:flex;align-items:center;min-height:100%} html{height:100%}}
+.top{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:linear-gradient(var(--cream) 70%,transparent);z-index:5}
+.top .mk{height:50px;width:auto;aspect-ratio:300/365;object-fit:contain;border-radius:10px;background:#FBF7E8;border:1px solid var(--gold-light);box-shadow:0 2px 8px rgba(15,51,36,.15)}
+.top .t{display:flex;flex-direction:column;line-height:1.1}
+.top .t b{font-family:var(--display);font-size:1.35rem;letter-spacing:.14em;color:var(--green)}
+.top .t span{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.top .sp{flex:1}
+.icobtn{width:40px;height:40px;border-radius:50%;background:var(--paper);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--green)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 0 calc(var(--tabh) + 28px + env(safe-area-inset-bottom,0px));scroll-behavior:smooth}
+.page{display:none;padding-inline:16px}.page.on{display:block;animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.page.on{animation:none}}
+.hello{padding:6px 0 14px}
+.hello small{color:var(--gold);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.7rem}
+.hello h1{font-size:1.85rem;color:var(--green);margin-top:2px}
+.hello p{margin:6px 0 0;color:var(--muted)}
+.stories{display:flex;gap:14px;overflow-x:auto;padding:4px 16px 14px;margin-inline:-16px;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.story{flex:none;width:68px;text-align:center;font-size:.74rem;font-weight:600;color:var(--ink)}
+.story i{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;margin-bottom:5px;padding:3px;background:conic-gradient(from 200deg,var(--gold),var(--gold-light),var(--gold))}
+.story i span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--cream);color:var(--green)}
+.story svg{width:28px;height:28px}
+.hero{border-radius:24px;padding:20px;color:var(--on-green);background:radial-gradient(120% 120% at 100% 0%,#1d7a52 0%,var(--green) 45%,var(--green-deep) 100%);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero::after{content:"";position:absolute;right:-30px;top:-30px;width:160px;height:160px;opacity:.25;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4l6 14 14-6-6 14 14 6-14 6 6 14-14-6-6 14-6-14-14 6 6-14-14-6 14-6-6-14 14 6z' fill='none' stroke='%23E6C877' stroke-width='1.4'/%3E%3C/svg%3E") center/contain no-repeat}
+.hero h2{font-size:1.45rem;max-width:15ch}
+.hero p{margin:8px 0 14px;opacity:.9;max-width:30ch}
+.pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;background:var(--gold);color:#2a1d00;box-shadow:0 6px 16px rgba(199,147,53,.4)}
+.pill.line{background:transparent;color:var(--green);border:1.5px solid var(--green);box-shadow:none}
+.pill.green{background:var(--green);color:var(--on-green);box-shadow:none}
+.pill[disabled]{opacity:.55}
+.sech{display:flex;align-items:baseline;justify-content:space-between;margin:24px 0 10px}
+.sech h2{font-size:1.25rem;color:var(--green)}
+.sech a{color:var(--gold);font-weight:700;font-size:.85rem}
+.rail{display:flex;gap:12px;overflow-x:auto;margin-inline:-16px;padding:2px 16px 12px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{scroll-snap-align:start;flex:none}
+.vcard{width:240px;background:var(--paper);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.vcard.full{width:auto;margin-bottom:14px}
+.art{height:120px;position:relative;display:grid;place-items:end start;padding:10px;color:var(--on-green)}
+.art svg.arch{position:absolute;right:10px;bottom:0;width:86px;opacity:.9}
+.art em{font-style:normal;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,.28);padding:3px 9px;border-radius:999px;position:relative}
+.vb{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px}
+.vb h3{font-size:1.1rem;color:var(--green)}
+.vb .m{color:var(--muted);font-size:.82rem}
+.vb .p{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.tag{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--gold-soft);color:var(--ink)}
+.tag.g{background:var(--green-soft);color:var(--green)}
+.ccard{width:250px;background:var(--paper);border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:6px}
+.ccard.full{width:auto;margin-bottom:14px}
+.ccard h3{font-size:1.1rem;color:var(--green)}
+.pk{display:flex;justify-content:space-between;gap:8px;padding-top:7px;border-top:1px dashed var(--line);font-size:.86rem}
+.pk b{font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 14px;padding:2px 16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 15px;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-weight:700;font-size:.85rem}
+.chip[aria-pressed="true"]{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.urgent{display:flex;gap:12px;align-items:center;margin-top:18px;padding:14px;border-radius:18px;background:var(--gold-soft);border:1px solid var(--gold-light)}
+.urgent svg{flex:none;width:34px;height:34px;color:var(--green)}
+.urgent b{display:block}
+.urgent span{font-size:.82rem;color:var(--muted)}
+.urgent a{margin-left:auto;font-weight:800;color:var(--green)}
+.title{padding:6px 0 10px}.title h1{font-size:1.6rem;color:var(--green)}.title p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--cream2);border-radius:999px;padding:4px;margin-bottom:12px;border:1px solid var(--line)}
+.seg button{padding:9px;border-radius:999px;font-weight:700;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--green);color:var(--on-green)}
+.chat{display:flex;flex-direction:column;height:calc(100dvh - 330px);min-height:320px}
+.log{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:2px 2px 8px}
+.msg{max-width:86%;padding:10px 14px;border-radius:18px;overflow-wrap:anywhere;white-space:pre-wrap}
+.msg.bot{background:var(--paper);border:1px solid var(--line);border-bottom-left-radius:6px;align-self:flex-start;box-shadow:var(--shadow)}
+.msg.me{background:var(--green);color:var(--on-green);border-bottom-right-radius:6px;align-self:flex-end}
+.opts{display:flex;flex-direction:column;gap:10px;align-self:stretch}
+.opt{display:flex;gap:12px;text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:12px;align-items:center}
+.opt:active{transform:scale(.99)}
+.opt.fit{border-color:var(--ok)}
+.opt .dot{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--on-green);background:linear-gradient(135deg,var(--green),var(--green-deep))}
+.opt .dot svg{width:22px;height:22px}
+.opt b{display:block;font-family:var(--display);font-weight:400;font-size:1.02rem;color:var(--green)}
+.opt small{display:block;color:var(--muted);font-size:.78rem}
+.opt .pr{font-weight:800;font-size:.86rem;font-variant-numeric:tabular-nums}
+.opt .fitt{color:var(--ok);font-size:.72rem;font-weight:700}
+.sum{align-self:stretch;border-radius:18px;padding:16px;background:linear-gradient(160deg,var(--gold-soft),var(--paper));border:1px solid var(--gold-light);display:flex;flex-direction:column;gap:6px}
+.sum h3{color:var(--green);font-size:1.15rem}
+.composer{display:flex;gap:8px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:5px 5px 5px 16px;box-shadow:var(--shadow)}
+.composer input{flex:1;min-width:0;border:0;background:none;font:inherit;color:var(--ink);padding:8px 0;outline:none}
+.send{width:42px;height:42px;border-radius:50%;background:var(--green);color:var(--on-green);display:grid;place-items:center}
+.send[disabled]{opacity:.5}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.voice{display:flex;flex-direction:column;align-items:center;gap:16px;padding:18px 0;text-align:center}
+.orbwrap{position:relative;width:200px;height:200px;display:grid;place-items:center}
+.ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--gold-light);opacity:.5}
+.ring.r2{inset:22px;opacity:.8}
+.orb{position:relative;width:128px;height:128px;border-radius:50%;display:grid;place-items:center;color:var(--on-green);background:radial-gradient(circle at 30% 25%,#2a8f62,var(--green) 55%,var(--green-deep));box-shadow:0 14px 34px rgba(19,92,61,.45)}
+.orb svg{width:46px;height:46px}
+.orb.live{animation:pulse 1.7s infinite}
+.orb.live~.ring{animation:rg 1.7s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes rg{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.15);opacity:0}}
+@media (prefers-reduced-motion:reduce){.orb.live,.orb.live~.ring{animation:none}}
+.vlog{width:100%;display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;text-align:left}
+.vlog p{margin:0;padding:8px 12px;border-radius:12px;background:var(--paper);border:1px solid var(--line);font-size:.88rem}
+.vlog p.u{background:var(--gold-soft)}
+.note{font-size:.78rem;color:var(--muted)}
+.err{color:var(--bad);font-weight:700}
+.bk{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:3px}
+.bk .h{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.bk b{font-family:var(--display);font-weight:400;color:var(--green);font-size:1.05rem}
+.st{font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
+.st.u{background:#F9DAD3;color:#8a2a1c}
+.login{position:absolute;inset:0;z-index:50;background:linear-gradient(160deg,var(--green-deep),var(--green));display:flex;flex-direction:column;justify-content:center;padding:28px;color:var(--on-green)}
+.login .lg{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.login h1{font-size:1.9rem;color:var(--on-green)}
+.login p{opacity:.85;margin:6px 0 20px}
+.login label{display:block;font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px;color:var(--gold-light)}
+.login input{width:100%;padding:13px 16px;border-radius:14px;border:0;font:inherit;background:#FFFCF3;color:#0F3324}
+.login .pill{width:100%;justify-content:center;margin-top:20px;border:0}
+.seg a.sg{display:block;text-align:center;padding:9px;border-radius:999px;font-weight:700;color:var(--muted);text-decoration:none}
+.seg a.sg[aria-selected="true"]{background:var(--green);color:var(--on-green)}
+.login{overflow:auto;justify-content:flex-start;padding-top:48px}
+.login .logo{flex:none;line-height:0}
+.login .logo .mk{height:104px;width:auto;aspect-ratio:300/365;object-fit:contain;border-radius:16px;background:#FBF7E8;border:2px solid var(--gold-light);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.login .credits{margin-top:auto;padding-top:26px;text-align:center;font-size:.68rem;line-height:1.5;opacity:.85}
+.login .credits b{display:block;color:var(--gold-light);letter-spacing:.08em;font-size:.72rem;margin-bottom:2px}
+.login .er{color:#ffd0c8;font-size:.85rem;min-height:1.2em;margin-top:8px}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pay{margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:8px}
+.payrow{display:flex;gap:8px;flex-wrap:wrap}
+.payrow .pill{padding:9px 14px;font-size:.85rem}
+.tabs{position:absolute;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));height:var(--tabh);border-radius:26px;background:var(--green-deep);display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;box-shadow:0 14px 34px rgba(12,63,42,.45);z-index:10;padding-inline:6px}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.66rem;font-weight:700;color:rgba(255,248,225,.62);padding:6px 0}
+.tabs a svg{width:24px;height:24px}
+.tabs a[aria-current="page"]{color:var(--gold-light)}
+.tabs .fab{position:relative;top:-22px;justify-self:center;width:66px;height:66px;border-radius:50%;background:linear-gradient(145deg,var(--gold-light),var(--gold));color:#2a1d00;display:grid;place-items:center;box-shadow:0 10px 22px rgba(199,147,53,.55);border:4px solid var(--cream);padding:0}
+.tabs .fab svg{width:30px;height:30px}
+.tabs .fab[aria-current="page"]{color:#2a1d00}
+.tabs .fabl{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:.66rem;font-weight:800;color:var(--gold-light)}
+.toast{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:var(--green-deep);color:var(--on-green);padding:8px 16px;border-radius:999px;font-size:.82rem;z-index:30;box-shadow:var(--shadow)}
+</style></head><body>
+<div class="app" id="app">
+<div class="login" id="login" hidden>
+<div class="lg"><div class="logo"><img class="mk" id="lgImg" src="logo.jpg" alt="Mezban logo"></div><div class="t"><b style="font-family:var(--display);letter-spacing:.14em;font-size:1.4rem">MEZBAN</b><br><span style="font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-light);font-weight:700">Plan. Gather. Together.</span></div></div>
+<h1>Welcome</h1><p>Tell us who you are so the committee can reach you about your booking.</p>
+<form id="loginForm" novalidate>
+<label for="lName">Your name</label><input id="lName" autocomplete="name" placeholder="Full name">
+<label for="lPhone">Mobile number</label><input id="lPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98xxxxxxxx">
+<label for="lEmail">Email (optional)</label><input id="lEmail" type="email" autocomplete="email" placeholder="you@example.com">
+<div class="er" id="lErr"></div>
+<button class="pill" type="submit">Continue</button>
+</form>
+<div class="credits"><b>Made by Team Zeenat-E-Zainab</b>Itrat Giga &middot; Sayyeda Hemani<br>Mariam Meghani &middot; Zia Fatima Shroff</div>
+</div>
+<header class="top">
+<img class="mk" id="hdImg" src="logo.jpg" alt="Mezban logo">
+<div class="t"><b>MEZBAN</b><span>Plan. Gather. Together.</span></div>
+<div class="sp"></div>
+<button class="icobtn" id="themeBtn" aria-label="Switch light or dark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</header>
+<div class="scroll" id="scroll">
+<!-- HOME -->
+<section class="page" id="p-home">
+<div class="hello"><small>Assalamu Alaikum</small><h1>What are we gathering for?</h1><p>Halls, caterers and the committee, all in one place.</p></div>
+<div class="stories" id="stories"></div>
+<div class="hero">
+<h2>Let Mezban plan it with you</h2>
+<p>Tell us the date and guests. We show only halls that are free and fit your budget.</p>
+<a class="pill" href="#ask"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Ask Mezban</a>
+</div>
+<div class="sech"><h2>Venues for you</h2><a href="#venues">See all</a></div>
+<div class="rail" id="homeVenues"></div>
+<div class="sech"><h2>Trusted caterers</h2><a href="#caterers">See all</a></div>
+<div class="rail" id="homeCaterers"></div>
+<div class="sech"><h2>Decorators</h2><a href="#decorators">See all</a></div>
+<div class="rail" id="homeDecor"></div>
+<div class="urgent">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
+<div><b>Janaza arrangements</b><span>Arambaug and Kabarastan, committee alerted at once.</span></div><a href="#ask" data-ask="Janaza, urgent">Help</a>
+</div>
+</section>
+<!-- VENUES -->
+<section class="page" id="p-venues">
+<div class="title"><h1>Choose a venue</h1><p>Prices are ranges. The committee confirms the final amount.</p></div>
+<div class="chips" id="venueFilter"></div>
+<div id="venueList"></div>
+</section>
+<!-- CATERERS -->
+<section class="page" id="p-caterers">
+<div class="seg" role="tablist" style="margin-bottom:10px"><a role="tab" href="#caterers" aria-selected="true" class="sg">Caterers</a><a role="tab" href="#decorators" aria-selected="false" class="sg">Decorators</a></div>
+<div class="title"><h1>Choose a caterer</h1><p>Per plate ranges for veg and non-veg.</p></div>
+<div class="chips" id="foodFilter"></div>
+<div id="catList"></div>
+</section>
+<!-- DECORATORS -->
+<section class="page" id="p-decorators">
+<div class="seg" role="tablist" style="margin-bottom:10px"><a role="tab" href="#caterers" aria-selected="false" class="sg">Caterers</a><a role="tab" href="#decorators" aria-selected="true" class="sg">Decorators</a></div>
+<div class="title"><h1>Choose a decorator</h1><p>Stage, flowers and lighting. Prices are ranges.</p></div>
+<div id="decList"></div>
+</section>
+<!-- ASK -->
+<section class="page" id="p-ask">
+<div class="title"><h1>Ask Mezban</h1><p>Type or speak. You choose, we arrange.</p></div>
+<div class="seg" role="tablist"><button role="tab" id="tabChat" aria-selected="true">Chat</button><button role="tab" id="tabVoice" aria-selected="false">Voice call</button></div>
+<div id="chatPane">
+<div class="chat">
+<div class="log" id="log" aria-live="polite"></div>
+<div class="quick" id="quick"></div>
+<form class="composer" id="form">
+<input id="msg" autocomplete="off" placeholder="Wedding on 20 Dec, 150 guests…" aria-label="Message">
+<button class="send" id="send" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+</form>
+</div>
+</div>
+<div id="voicePane" hidden>
+<div class="voice">
+<div class="orbwrap"><div class="orb" id="orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><div class="ring"></div><div class="ring r2"></div></div>
+<div id="vstate" class="note" style="font-size:.95rem">Tap to talk to Mezban in English.</div>
+<div><button class="pill green" id="vstart">Start voice call</button><button class="pill line" id="vstop" hidden>End call</button></div>
+<div class="vlog" id="vlog" aria-live="polite"></div>
+<p class="note">Say: “I need a hall for a wedding on 20 December for 150 guests.”</p>
+</div>
+</div>
+</section>
+<!-- BOOKINGS -->
+<section class="page" id="p-committee">
+<div class="title"><h1>Bookings</h1><p>Live from the committee database.</p></div>
+<div id="bookWrap"><p class="note">Loading…</p></div>
+<button class="pill line" id="refresh" style="margin-top:4px">Refresh</button> <button class="pill line" id="signout" style="margin-top:4px">Sign out</button><p class="note" id="who"></p>
+</section>
+</div>
+<nav class="tabs" aria-label="Main">
+<a href="#home" data-p="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg>Home</a>
+<a href="#venues" data-p="venues"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10c0-4 4-6 8-9 4 3 8 5 8 9v11M9 21v-6a3 3 0 0 1 6 0v6"/></svg>Venues</a>
+<a href="#ask" data-p="ask" class="fab" aria-label="Ask Mezban"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 17l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg></a>
+<a href="#caterers" data-p="caterers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15h18a9 9 0 0 0-18 0zM2 19h20M12 6V4"/></svg>Food &amp; Decor</a>
+<a href="#committee" data-p="committee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="17" rx="3"/><path d="M8 2v4M16 2v4M8 11h8M8 15h5"/></svg>Bookings</a>
+</nav>
+</div>
+<script type="module">
+const API = 'https://itrat2.app.n8n.cloud/webhook/mezban';
+const VAPI_PUBLIC_KEY = window.MEZBAN_VAPI_KEY || 'c7499766-f837-4c94-ba26-b3fa4159bd61';
+const VAPI_ASSISTANT = 'e8770531-cc8a-4ae5-b4cf-6ec95b286691';
+const $ = id => document.getElementById(id);
+const fmt = n => 'Rs ' + Number(n).toLocaleString('en-IN');
+const range = (a,b) => (!a && !b) ? 'Contact committee' : fmt(a) + ' – ' + fmt(b);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let demo = false;
+let profile=null; try{ profile=JSON.parse(localStorage.getItem('mezban_profile')||'null'); }catch(e){}
+function applyProfile(){ if(profile&&profile.name){ $('login').hidden=true; const h=document.querySelector('.hello small'); if(h) h.textContent='Assalamu Alaikum, '+profile.name.split(' ')[0]; $('who').textContent='Signed in as '+profile.name+' · '+profile.phone; } else $('login').hidden=false; }
+$('loginForm').addEventListener('submit',e=>{ e.preventDefault(); const n=$('lName').value.trim(), p=$('lPhone').value.trim(), m=$('lEmail').value.trim();
+if(n.length<2){ $('lErr').textContent='Please enter your name.'; return; }
+if(p.replace(/\D/g,'').length<10){ $('lErr').textContent='Please enter a valid mobile number.'; return; }
+profile={name:n,phone:p,email:m}; try{ localStorage.setItem('mezban_profile',JSON.stringify(profile)); }catch(e){} $('lErr').textContent=''; applyProfile(); });
+$('signout').onclick=()=>{ try{ localStorage.removeItem('mezban_profile'); }catch(e){} profile=null; applyProfile(); location.hash='#home'; };
+const ICON = {
+wedding:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M12 3l1.5 2.5L12 8 10.5 5.5z"/></svg>',
+majlis:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M8 21V11l4-4 4 4v10M4 21h16M10 21v-4h4v4"/></svg>',
+milad:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a8 8 0 1 0 8 9 6 6 0 0 1-8-9z"/><path d="M18 4l.6 1.4L20 6l-1.4.6L18 8l-.6-1.4L16 6l1.4-.6z"/></svg>',
+janaza:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>',
+hall:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V10c0-4 4-6 8-9 4 3 8 5 8 9v11M9 21v-6a3 3 0 0 1 6 0v6"/></svg>',
+cook:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15h18a9 9 0 0 0-18 0zM2 19h20M12 6V4"/></svg>'
+};
+const ARCH = '<svg class="arch" viewBox="0 0 80 100" fill="none" stroke="rgba(255,248,225,.75)" stroke-width="2.4"><path d="M8 100V46C8 28 28 18 40 2c12 16 32 26 32 44v54"/><path d="M20 100V50c0-12 12-18 20-30 8 12 20 18 20 30v50" stroke-opacity=".5"/><path d="M40 52l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="rgba(230,200,119,.9)" stroke="none"/></svg>';
+const GRAD = ['linear-gradient(135deg,#135C3D,#0C3F2A)','linear-gradient(135deg,#1d7a52,#135C3D 60%,#0C3F2A)','linear-gradient(135deg,#0C3F2A,#1d7a52)','linear-gradient(135deg,#6b5a1d,#2c3a1e)','linear-gradient(135deg,#8a6a1c,#135C3D)'];
+const VENUES = [
+{name:'Al-Zahra Hall', area:'Dongri', cap:250, min:40000, max:60000, ev:['wedding','majlis','milad'], fac:['Parking','AC','Stage','Kitchen'], img:''},
+{name:'Noor Banquet', area:'Kurla', cap:450, min:90000, max:130000, ev:['wedding','majlis','milad'], fac:['Parking','AC','Stage','Kitchen'], img:''},
+{name:'Baitul Ilm Hall', area:'Mazgaon', cap:800, min:180000, max:250000, ev:['wedding','majlis','milad'], fac:['Parking','AC','Stage','Kitchen','Generator'], img:''},
+{name:'Kesar Baug Hall', area:'Dongri', cap:500, min:120000, max:160000, ev:['wedding','majlis','milad'], fac:['Parking','AC','Stage','Kitchen']},
+{name:'Haji Nazar Ali Imambargah', area:'Kurla', cap:350, min:50000, max:70000, ev:['wedding','majlis','milad'], fac:['Parking','AC','Kitchen']},
+{name:'Khoja Masjid', area:'Dongri', cap:250, min:35000, max:55000, ev:['wedding','majlis','milad'], fac:['AC','Kitchen']},
+{name:'Arambaug', area:'Byculla', cap:300, min:0, max:0, ev:['janaza'], fac:['Janaza']},
+{name:'Khoja Shia Isna Ashari Kabarastan', area:'Juhu, Andheri W', cap:500, min:0, max:0, ev:['janaza'], fac:['Janaza']}
+];
+const CATERERS = [
+{name:'Zainab Home Foods', note:'Home style cooking', pk:[['Home Veg','veg',350,410],['Home Non-Veg','nonveg',520,600]]},
+{name:'Sakina Caterers', note:'Classic community menu', pk:[['Classic Veg','veg',420,480],['Classic Non-Veg','nonveg',600,700]]},
+{name:'Rizvi Dawat Kitchen', note:'Dawat style for large gatherings', pk:[['Dawat Veg','veg',460,540],['Dawat Non-Veg','nonveg',670,770]]}
+];
+const DECORATORS = [
+{name:'Sample: Noor Floral Decor', area:'Dongri', note:'Simple majlis and milad setup', min:15000, max:35000},
+{name:'Occasions Events India', area:'Mumbai', note:'Stage decor, florals, venue decoration', min:40000, max:120000},
+{name:'Sample: Zahra Event Styling', area:'Kurla', note:'Nikah stage and entrance decor', min:45000, max:90000},
+{name:'Double S Enterprises', area:'Andheri East', note:'Stage decor, drapes, lighting, florals', min:100000, max:350000},
+{name:'Roop Rang Decorators', area:'Mumbai', note:'Theme decor, stage, floral installations', min:100000, max:500000}
+];
+const EVENTS = [['wedding','Wedding'],['majlis','Majlis'],['milad','Milad'],['janaza','Janaza']];
+$('stories').innerHTML = EVENTS.map(([k,l])=>`<a class="story" href="#venues" data-ev="${k}"><i><span>${ICON[k]}</span></i>${l}</a>`).join('');
+const vcard = (v,i,full) => `<article class="vcard ${full?'full':''}"><div class="art" style="background:${GRAD[i%GRAD.length]}">${v.img?`<img src="${esc(v.img)}" alt="" loading="lazy" onerror="this.remove()">`:''}<em>${esc(v.area)}</em>${ARCH}</div>
+<div class="vb"><h3>${esc(v.name)}</h3><div class="m">Up to ${v.cap} guests</div><div class="p">${range(v.min,v.max)}</div>
+<div class="row">${v.ev.map(e=>`<span class="tag g">${esc(e)}</span>`).join('')}${v.fac.map(f=>`<span class="tag">${esc(f)}</span>`).join('')}</div>
+<div class="row"><a class="pill green" style="padding:8px 14px;font-size:.85rem" href="#ask" data-ask="I want to book ${esc(v.name)}">Ask Mezban</a></div></div></article>`;
+const ccard = (c,full,food='all') => `<article class="ccard ${full?'full':''}"><h3>${esc(c.name)}</h3><div class="m note">${esc(c.note)}</div>
+${c.pk.filter(p=>food==='all'||p[1]===food).map(p=>`<div class="pk"><span>${esc(p[0])}</span><b>${fmt(p[2])} – ${fmt(p[3])} / plate</b></div>`).join('')}
+<div class="row"><a class="pill green" style="padding:8px 14px;font-size:.85rem" href="#ask" data-ask="Show me caterers like ${esc(c.name)}">Ask Mezban</a></div></article>`;
+const dcard = (d,full) => `<article class="ccard ${full?'full':''}"><h3>${esc(d.name)}</h3><div class="m note">${esc(d.note)} · ${esc(d.area)}</div><div class="pk"><span>Price range</span><b>${range(d.min,d.max)}</b></div>
+<div class="row"><a class="pill green" style="padding:8px 14px;font-size:.85rem" href="#ask" data-ask="I want decorators like ${esc(d.name)}">Ask Mezban</a></div></article>`;
+$('homeDecor').innerHTML = DECORATORS.map(d=>dcard(d)).join('');
+$('decList').innerHTML = DECORATORS.map(d=>dcard(d,true)).join('');
+$('homeVenues').innerHTML = VENUES.map((v,i)=>vcard(v,i)).join('');
+$('homeCaterers').innerHTML = CATERERS.map(c=>ccard(c)).join('');
+function chipRow(el, items, cb, active){
+el.innerHTML = items.map(([k,l])=>`<button class="chip" data-k="${k}" aria-pressed="${k===active}">${l}</button>`).join('');
+el.onclick = e => { const b=e.target.closest('button'); if(!b) return; el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b)); cb(b.dataset.k); };
+}
+const showV = ev => { $('venueList').innerHTML = VENUES.map((v,i)=>[v,i]).filter(([v])=>ev==='all'||v.ev.includes(ev)).map(([v,i])=>vcard(v,i,true)).join(''); };
+const showC = f => { $('catList').innerHTML = CATERERS.map(c=>ccard(c,true,f)).join(''); };
+chipRow($('venueFilter'), [['all','All'],...EVENTS], showV, 'all'); showV('all');
+chipRow($('foodFilter'), [['all','All'],['veg','Veg'],['nonveg','Non-veg']], showC, 'all'); showC('all');
+document.addEventListener('click', e => {
+const s = e.target.closest('[data-ev]'); if(s){ setTimeout(()=>{ chipRow($('venueFilter'), [['all','All'],...EVENTS], showV, s.dataset.ev); showV(s.dataset.ev); },0); }
+const a = e.target.closest('[data-ask]'); if(a){ pendingAsk = a.dataset.ask; }
+});
+let pendingAsk = null;
+const pages = ['home','venues','caterers','decorators','ask','committee'];
+function route(){
+const h = (location.hash||'#home').slice(1); const p = pages.includes(h)?h:'home';
+pages.forEach(x=>$('p-'+x).classList.toggle('on', x===p));
+document.querySelectorAll('.tabs a').forEach(a=>{ if(a.dataset.p===(p==='decorators'?'caterers':p)) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+$('scroll').scrollTop = 0;
+if(p==='committee') loadBookings();
+if(p==='ask'){ if(!started) startChat(); if(pendingAsk){ const q=pendingAsk; pendingAsk=null; send(q); } }
+}
+addEventListener('hashchange', route);
+const sid = 'web-' + Math.random().toString(36).slice(2,10);
+let started=false, busy=false, dstep=0;
+const log=$('log');
+const add=(t,c)=>{ const d=document.createElement('div'); d.className='msg '+c; d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; return d; };
+function startChat(){
+started=true;
+add('Assalamu Alaikum! I am Mezban. Tell me the event, date and number of guests, and I will show you halls and caterers to choose from.','bot');
+$('quick').innerHTML = ['Wedding in December','Majlis for 100 guests','Milad this month','Janaza, urgent'].map(t=>`<button type="button" class="chip">${t}</button>`).join('');
+$('quick').onclick = e => { const b=e.target.closest('button'); if(b) send(b.textContent); };
+}
+function options(o){
+if(!o||!o.items||!o.items.length) return;
+const box=document.createElement('div'); box.className='opts';
+o.items.forEach(it=>{
+const b=document.createElement('button'); b.type='button'; b.className='opt'+(it.withinBudget?' fit':'');
+if(o.type==='venue'){
+b.innerHTML=`<span class="dot">${ICON.hall}</span><span><b>${esc(it.name)}</b><small>${esc(it.area)} · ${esc(it.capacity)} guests</small><span class="pr">${range(it.priceMin,it.priceMax)}</span> ${it.withinBudget?'<span class="fitt">Fits budget</span>':''}</span>`;
+b.onclick=()=>send('I choose '+it.name);
+} else if(o.type==='decorator'){
+b.innerHTML=`<span class="dot">${ICON.hall}</span><span><b>${esc(it.name)}</b><small>${esc(it.area||'')}${it.menu?' · '+esc(it.menu):''}</small><span class="pr">${range(it.priceMin,it.priceMax)}</span> ${it.withinBudget?'<span class="fitt">Fits budget</span>':''}</span>`;
+b.onclick=()=>send('I choose the decorator '+it.name);
+} else {
+b.innerHTML=`<span class="dot">${ICON.cook}</span><span><b>${esc(it.caterer)}</b><small>${esc(it.package)}${it.menu?' · '+esc(it.menu):''}</small><span class="pr">${fmt(it.perPlateMin)} – ${fmt(it.perPlateMax)} / plate</span><small>Total ${range(it.totalMin,it.totalMax)}</small> ${it.withinBudget?'<span class="fitt">Fits budget</span>':''}</span>`;
+b.onclick=()=>send('I choose '+it.caterer+' '+it.package);
+}
+box.appendChild(b);
+});
+if(o.type==='decorator'){ const sk=document.createElement('button'); sk.type='button'; sk.className='pill line'; sk.textContent='Skip decorators'; sk.onclick=()=>send('Skip decorators'); box.appendChild(sk); }
+log.appendChild(box); log.scrollTop=log.scrollHeight;
+}
+function summary(s){
+const box=document.createElement('div'); box.className='sum';
+box.innerHTML=`<h3>Your booking</h3><div>${esc(s.event)} · ${esc(s.date)} · ${esc(s.guests)} guests</div><div><b>${esc(s.venue)}</b>${s.caterer?' with '+esc(s.caterer):''}</div>${s.decorator?`<div>Decorator: <b>${esc(s.decorator)}</b></div>`:''}${s.totalMax?`<div style="font-weight:800">Estimate ${range(s.totalMin,s.totalMax)}</div>`:''}<div class="note">The committee confirms the final price.</div>`;
+const b=document.createElement('button'); b.className='pill'; b.type='button'; b.textContent='Confirm booking';
+b.onclick=async()=>{ b.disabled=true; b.textContent='Confirming…';
+try{
+if(demo){ await new Promise(r=>setTimeout(r,700)); box.innerHTML=`<h3>Booking confirmed</h3><div><b>MZ-DEMO</b> · ${esc(s.venue)}</div><div class="note">Preview mode: nothing was saved.</div>`; return; }
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'confirm',sessionId:sid,language:'en',summary:Object.assign({},s,{contactName:s.contactName||(profile&&profile.name)||'',contactPhone:s.contactPhone||(profile&&profile.phone)||'',contactEmail:s.contactEmail||(profile&&profile.email)||''})})});
+const j=await r.json();
+if(j.ok) box.innerHTML=`<h3>Booking confirmed</h3><div><b>${esc(j.bookingId)}</b> · ${esc(j.venue||s.venue)}</div><div class="note">${(s.contactEmail||(profile&&profile.email))?'Confirmation and payment links sent to '+esc(s.contactEmail||profile.email)+'.':'The committee will contact you.'}</div>`;
+if(j.payment) payPanel(box,j);
+else if(!j.ok) box.innerHTML=`<h3 class="err">Could not confirm</h3><div>${esc(j.error||'Please try another date.')}</div>${j.nextFreeDates?`<div class="note">Free dates: ${esc(JSON.stringify(j.nextFreeDates))}</div>`:''}`;
+}catch(e){ b.disabled=false; b.textContent='Confirm booking'; add('Network problem. Please try again.','bot'); }
+};
+box.appendChild(b); log.appendChild(box); log.scrollTop=log.scrollHeight;
+}
+const announced=new Set(); const pollers={};
+async function pollPay(id){
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'payment_status',bookingId:id})});
+return await r.json();
+}
+function applyPay(st,wrap){
+const stat=wrap.querySelector('.paystat'), row=wrap.querySelector('.payrow'), id=st.bookingId;
+const mail = st.contactEmail ? ' A confirmation email has been sent to you.' : '';
+if(st.paymentStatus==='paid'){
+stat.innerHTML='<b style="color:var(--ok)">Payment complete. Thank you!</b>'; row.hidden=true;
+if(pollers[id]){ clearInterval(pollers[id]); delete pollers[id]; }
+if(!announced.has('p'+id)){ announced.add('p'+id); add('Yes, your payment is done. Total paid '+fmt(st.paid)+'. Booking '+id+' is fully paid.'+mail,'bot'); }
+} else if(st.paymentStatus==='advance_paid'){
+const bal=(st.links||[]).find(l=>l.kind==='balance'&&l.status!=='paid');
+stat.innerHTML='Advance paid: '+fmt(st.paid)+'. Balance pending: '+fmt(st.balance)+'.';
+row.innerHTML=''; if(bal){ const a=document.createElement('a'); a.className='pill'; a.target='_blank'; a.rel='noopener'; a.href=bal.url; a.textContent='Pay balance '+fmt(bal.amount); row.appendChild(a); }
+const chk=document.createElement('button'); chk.className='pill line'; chk.textContent='I have paid, check'; chk.onclick=()=>checkPay(id,wrap); row.appendChild(chk);
+if(!announced.has('a'+id)){ announced.add('a'+id); add('Yes, your advance payment of '+fmt(st.paid)+' is received for booking '+id+'. Balance of '+fmt(st.balance)+' is pending.'+(st.contactEmail?' We have emailed you the balance payment link.':''),'bot'); }
+}
+}
+async function checkPay(id,wrap){ try{ const st=await pollPay(id); if(st&&st.ok) applyPay(st,wrap); }catch(e){} }
+function watchPay(id,wrap){
+if(pollers[id]) return; let n=0;
+pollers[id]=setInterval(async()=>{ n++; if(n>240){ clearInterval(pollers[id]); delete pollers[id]; return; } await checkPay(id,wrap); },6000);
+}
+function payPanel(box,j){
+const pay=j.payment||{}; if(!pay.advance&&!pay.full) return;
+const wrap=document.createElement('div'); wrap.className='pay';
+wrap.innerHTML='<div class="note">Secure your booking. Choose how you would like to pay (Razorpay test mode):</div><div class="payrow"></div><div class="paystat note">Waiting for payment…</div>';
+const row=wrap.querySelector('.payrow');
+const mk=(label,url)=>{ const a=document.createElement('a'); a.className='pill'; a.href=url; a.target='_blank'; a.rel='noopener'; a.textContent=label; a.onclick=()=>watchPay(j.bookingId,wrap); return a; };
+if(pay.advance) row.appendChild(mk('Pay advance '+fmt(pay.advance.amount),pay.advance.url));
+if(pay.full) row.appendChild(mk('Pay full '+fmt(pay.full.amount),pay.full.url));
+const chk=document.createElement('button'); chk.className='pill line'; chk.textContent='I have paid, check'; chk.onclick=()=>checkPay(j.bookingId,wrap); row.appendChild(chk);
+box.appendChild(wrap); log.scrollTop=log.scrollHeight; watchPay(j.bookingId,wrap);
+}
+function demoReply(){
+dstep++;
+if(dstep===1) return {reply:'Here are the halls free on that date. Which one would you like to choose?', options:{type:'venue',items:[
+{name:'Khoja Masjid',area:'Dongri',capacity:250,priceMin:35000,priceMax:55000,withinBudget:true},
+{name:'Haji Nazar Ali Imambargah',area:'Kurla',capacity:350,priceMin:50000,priceMax:70000,withinBudget:true},
+{name:'Kesar Baug Hall',area:'Dongri',capacity:500,priceMin:120000,priceMax:160000,withinBudget:false}]}};
+if(dstep===2) return {reply:'Good choice. Now pick a caterer for 150 guests.', options:{type:'caterer',items:[
+{caterer:'Zainab Home Foods',package:'Home Non-Veg',menu:'Biryani, korma, salad',perPlateMin:520,perPlateMax:600,totalMin:78000,totalMax:90000,withinBudget:true},
+{caterer:'Sakina Caterers',package:'Classic Non-Veg',menu:'Pulao, korma, kebab',perPlateMin:600,perPlateMax:700,totalMin:90000,totalMax:105000,withinBudget:true}]}};
+return {reply:'Estimate: hall Rs 50,000 – 70,000 plus catering Rs 78,000 – 90,000, total Rs 1,28,000 – 1,60,000. Press Confirm booking to continue.', summary:{ready:true,event:'Wedding',date:'20 Dec 2026',dateISO:'2026-12-20',guests:150,foodType:'nonveg',venue:'Haji Nazar Ali Imambargah',caterer:'Zainab Home Foods',totalMin:128000,totalMax:160000,budget:200000,contactName:'',contactPhone:'',contactEmail:'',urgent:false}};
+}
+async function send(text){
+if(busy||!text.trim()) return;
+if(location.hash!=='#ask') location.hash='#ask';
+if(!started) startChat();
+busy=true; $('send').disabled=true; $('msg').value='';
+add(text,'me'); const w=add('Mezban is checking…','bot');
+let j=null; const first=!window._sent; window._sent=true;
+const msgText = (first&&profile) ? '[Client: '+profile.name+', phone '+profile.phone+(profile.email?', email '+profile.email:'')+'] '+text : text;
+for(let a=0;a<2&&!(j&&j.reply);a++){
+try{
+const ctl=new AbortController(); const tm=setTimeout(()=>ctl.abort(),55000);
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',sessionId:sid,language:'en',message:msgText}),signal:ctl.signal});
+clearTimeout(tm); j=await r.json();
+}catch(e){ if(location.protocol!=='https:'&&location.protocol!=='http:'){ demo=true; j=demoReply(); } else j=null; }
+}
+if(!j||!j.reply) j={reply:'Sorry, I could not reach Mezban just now. Please try again in a moment.'};
+w.remove(); add(j.reply||'Sorry, I did not get that.','bot'); options(j.options); if(j.summary) summary(j.summary);
+busy=false; $('send').disabled=false;
+}
+$('form').addEventListener('submit', e=>{ e.preventDefault(); send($('msg').value); });
+const tab = v => { $('chatPane').hidden=v; $('voicePane').hidden=!v; $('tabChat').setAttribute('aria-selected',!v); $('tabVoice').setAttribute('aria-selected',v); };
+$('tabChat').onclick=()=>tab(false); $('tabVoice').onclick=()=>tab(true);
+let vapi=null; const vlog=$('vlog');
+const vline=(t,c)=>{ const p=document.createElement('p'); p.textContent=t; if(c)p.className=c; vlog.appendChild(p); vlog.scrollTop=vlog.scrollHeight; };
+$('vstart').onclick=async()=>{
+if(!VAPI_PUBLIC_KEY || VAPI_PUBLIC_KEY.startsWith('__')){ $('vstate').innerHTML='<span class="err">Voice is not connected in this preview.</span>'; return; }
+$('vstate').textContent='Connecting…';
+try{
+if(!vapi){ const m=await import('https://esm.sh/@vapi-ai/web@2.3.8'); const V=m.default?.default||m.default||m.Vapi; vapi=new V(VAPI_PUBLIC_KEY);
+vapi.on('call-start',()=>{ $('orb').classList.add('live'); $('vstate').textContent='Listening. Speak now.'; $('vstart').hidden=true; $('vstop').hidden=false; });
+vapi.on('call-end',()=>{ $('orb').classList.remove('live'); $('vstate').textContent='Call ended.'; $('vstart').hidden=false; $('vstop').hidden=true; });
+vapi.on('message',m=>{ if(m.type==='transcript'&&m.transcriptType==='final') vline((m.role==='user'?'You: ':'Mezban: ')+m.transcript, m.role==='user'?'u':''); });
+vapi.on('error',e=>{ $('vstate').innerHTML='<span class="err">'+esc(e?.errorMsg||e?.message||'Voice error')+'</span>'; }); }
+await vapi.start(VAPI_ASSISTANT);
+}catch(e){ $('vstate').innerHTML='<span class="err">Could not start: '+esc(e.message||e)+'</span>'; }
+};
+$('vstop').onclick=()=>vapi&&vapi.stop();
+const SAMPLE=[{booking_id:'MZ-118',event:'Wedding',booking_date:'2026-12-20',venue:'Kesar Baug Hall',guests:300,status:'confirmed'},{booking_id:'MZ-119',event:'Janaza',booking_date:'2026-10-04',venue:'Arambaug',guests:150,status:'urgent'}];
+function renderBookings(list, note){
+const w=$('bookWrap');
+if(!list.length){ w.innerHTML='<p class="note">No bookings yet.</p>'; return; }
+w.innerHTML=(note?`<p class="note">${note}</p>`:'')+list.map(b=>{
+const id=b.booking_id||b.id||b.bookingId||'', ev=b.event||b.event_type||'', d=b.booking_date||b.date||b.event_date||'', v=b.venue||b.venue_name||'', g=b.guests||b.guest_count||'', st=String(b.status||'confirmed'), u=/urgent/i.test(st)||b.urgent===true;
+return `<div class="bk"><div class="h"><b>${esc(id)} ${esc(ev)}</b><span class="st ${u?'u':''}">${esc(u?'urgent':st)}</span></div><div>${esc(v)}${b.decorator?' · '+esc(b.decorator):''}</div>${b.paymentStatus?`<div><span class="st ${b.paymentStatus==='paid'?'':'u'}">${b.paymentStatus==='paid'?'Paid':b.paymentStatus==='advance_paid'?'Advance paid':'Unpaid'}</span></div>`:''}<div class="note">${esc(d)} · ${esc(g)} guests</div></div>`;
+}).join('');
+}
+async function loadBookings(){
+try{
+const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list_bookings'})});
+let j=await r.json(); if(!Array.isArray(j)) j=j.bookings||j.data||j.result||[];
+renderBookings(j);
+}catch(e){ renderBookings(SAMPLE,'Preview mode: sample bookings shown.'); }
+}
+$('refresh').onclick=loadBookings;
+$('themeBtn').onclick=()=>{ const r=document.documentElement; const dark = r.dataset.theme==='dark' || (!r.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches); r.dataset.theme = dark?'light':'dark'; };
+applyProfile();
+route();
+</script>
+</body></html>
